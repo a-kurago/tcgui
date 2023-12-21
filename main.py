@@ -206,7 +206,39 @@ def parse_rule(split_rule):
         elif argument == "limit":
             rule["limit"] = split_rule[i + 1]
         i += 1
+
+    add_container_name(rule)
     return rule
+
+
+def add_container_name(rule):
+    container = get_containers()
+
+    for container in container:
+        if str(container.get('veth')) in rule["name"]:
+            rule["name"] += f' {container.get("name")}'
+            break
+
+
+def get_containers():
+    containers = []
+    proc = subprocess.Popen(["./dockerveth.sh"], stdout=subprocess.PIPE)
+    output = proc.communicate()[0].decode()
+    lines = output.splitlines()
+
+    for line in lines:
+        if line.startswith('CONTAINER ID'):
+            continue
+
+        id_, veth, name = line.split()
+
+        containers.append({
+            'id': id_,
+            'name': name,
+            'veth': veth,
+        })
+
+    return containers
 
 
 if __name__ == "__main__":
