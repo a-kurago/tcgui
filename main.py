@@ -216,7 +216,7 @@ def add_container_name(rule):
 
     for container in container:
         if str(container.get('veth')) in rule["name"]:
-            rule["name"] += f' {container.get("name")}'
+            rule["container"] = container.get("name")
             break
 
 

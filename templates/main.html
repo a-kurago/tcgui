@@ -12,7 +12,7 @@
     <h1>TCGUI - {{ rules|length }} Available Interfaces</h1>
     <ul>
         {% for rule in rules %}
-        <li><a href="#{{ rule['name'] }}">{{ rule['name'] }}</a></li>
+        <li><a href="#{{ rule['name'] }}">{{ rule['name'] }} {{ rule['container'] }}</a></li>
         {% endfor %}
     </ul>
     {% for rule in rules %}
